@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/upkanet/torhero/issues"
   },
-  "homepage": "https://github.com/upkanet/torhero#readme"
+  "homepage": "https://github.com/upkanet/torhero#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "webtorrent": "^1.8.29"
+  }
 }
