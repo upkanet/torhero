@@ -10,8 +10,8 @@
    sodipodi:docname="logo.svg"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    inkscape:export-filename="C:\Users\JD\Dev\torhero\public\img\logo.png"
-   inkscape:export-xdpi="300"
-   inkscape:export-ydpi="300"
+   inkscape:export-xdpi="150"
+   inkscape:export-ydpi="150"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,15 +27,15 @@
      inkscape:document-units="mm"
      showgrid="false"
      units="px"
-     inkscape:zoom="4"
-     inkscape:cx="-29.5"
-     inkscape:cy="25.875"
+     inkscape:zoom="8"
+     inkscape:cx="16.625"
+     inkscape:cy="7.8125"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="1912"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer4" />
   <defs
      id="defs2" />
   <g
@@ -56,6 +56,21 @@
      id="layer2"
      inkscape:label="Logo"
      style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Logo 1">
+    <g
+       id="g1917-9"
+       transform="matrix(0.88840138,0,0,1,1.5176722,-14.381892)"
+       style="display:inline;stroke-width:1.63704762;stroke-miterlimit:4;stroke-dasharray:none">
+      <path
+         id="rect965-8"
+         style="fill:#1a1a1a;fill-opacity:1;stroke:#1a1a1a;stroke-width:1.63704762;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill;stop-color:#000000"
+         d="m 1.0387828,16.917138 v 2.848405 h -0.00291 c -3.12e-5,0.227852 0.015891,0.45333 0.045953,0.674894 h 0.00116 c 0.1890582,1.380277 0.9456892,2.608589 2.0771752,3.31866 1.3147904,0.824975 2.9349557,0.824975 4.2497461,0 1.0666966,-0.609219 1.8681229,-1.796961 2.0736851,-3.31866 h 0.00116 c 0.02925,-0.2184 0.045703,-0.443474 0.049443,-0.674894 v -2.833419 c -1.0470985,0.772034 -1.4546161,1.707035 -1.9660745,2.850989 8.667e-4,0.226794 -0.04342,0.458548 -0.079112,0.651123 h -0.00116 C 7.3304603,21.069262 6.9546033,21.620607 6.42803,21.95869 c -0.7069272,0.45379 -1.5784894,0.45379 -2.2854166,0 -0.5266508,-0.338158 -0.9024452,-0.889688 -1.059811,-1.524454 h -0.00175 c -0.052604,-0.214299 -0.080073,-0.43804 -0.080272,-0.66611 v -0.0026 C 2.5519893,18.627988 1.8540845,17.789817 1.0387828,16.917138 Z"
+         sodipodi:nodetypes="ccccccccccccccccccccc" />
+    </g>
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer3"

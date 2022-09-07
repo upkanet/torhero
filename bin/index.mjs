@@ -12,7 +12,8 @@ app.use('/', express.static(path.join(__dirname, '../public')))
 const client = new WebTorrent()
 
 app.get('/',(req,res)=>{
-    res.redirect('index.htm')
+    res.sendFile(path.join(__dirname, '../public/index.htm'))
+    // res.redirect('index.htm')
 })
 
 app.get('/m/:folder/:magnet', (req, res) =>{
