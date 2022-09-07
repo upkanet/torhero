@@ -1,7 +1,13 @@
+#!/usr/bin/env node
 import WebTorrent from 'webtorrent';
 import express from 'express';
 const app = express();
-app.use(express.static('public'));
+// app.use(express.static('public'));
+import path from 'path';
+import url from 'url';
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/', express.static(path.join(__dirname, '../public')))
 
 const client = new WebTorrent()
 
@@ -43,5 +49,6 @@ app.get('/del/:id',(req,res)=>{
     torrent.destroy()
 })
 
-
-app.listen(8000);
+app.listen(8000,()=>{
+    console.log("TorHero available on http://localhost:8000")
+});
