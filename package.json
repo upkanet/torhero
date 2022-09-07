@@ -2,12 +2,13 @@
   "name": "torhero",
   "version": "0.1.0",
   "description": "Mobile and WebUI minimalist seedbox server based on webtorrent",
-  "main": "./bin/index.js",
-  "bin":{
-    "torhero":"./bin/index.mjs"
+  "main": "./bin/index.mjs",
+  "bin": {
+    "torhero": "./bin/index.mjs"
   },
   "preferGlobal": true,
   "scripts": {
+    "start": "node ./bin/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
