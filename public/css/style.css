@@ -24,3 +24,13 @@
     text-overflow:ellipsis;
     white-space: nowrap;
 }
+
+dialog {
+    padding: 0;
+    border: none !important;
+    /* !important used here to override polyfill CSS, if loaded */
+    border-radius: calc(5px * 3.75);
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 1.6rem;
+    max-width: 400px;
+  }

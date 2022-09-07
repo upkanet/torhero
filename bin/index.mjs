@@ -8,8 +8,13 @@ import url from 'url';
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/', express.static(path.join(__dirname, '../public')))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+import {Folders} from '../lib/folders.mjs'
 
 const client = new WebTorrent()
+const folders = new Folders()
 
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname, '../public/index.htm'))
@@ -48,6 +53,19 @@ app.get('/del/:id',(req,res)=>{
     const torrent = client.torrents[id]
     console.log('Client is deleting',torrent.name)
     torrent.destroy()
+})
+
+//Folders
+app.get('/folders',(req,res)=>{
+    folders.load()
+    res.json(folders.list)
+})
+
+app.post('/folders',(req,res)=>{
+    folders.load()
+    const b = req.body
+    folders.add(b.name,b.path)
+    res.json({"message":"ok"})
 })
 
 app.listen(8000,()=>{
