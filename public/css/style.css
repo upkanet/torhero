@@ -1,8 +1,26 @@
-.tor{
-    border-bottom: 1px solid #0d6efd;
-}
-
 .subinfo{
     font-size: 0.8rem;
     color: grey;
+}
+
+.col-x{
+    width: 1rem;
+}
+
+.col-speed{
+    width: 5rem;
+}
+
+.col-progress{
+    flex:1;
+}
+
+.row-progress{
+    display: flex;
+}
+
+.torname{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }

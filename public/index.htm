@@ -20,12 +20,12 @@
 
 <body>
     <div class="container">
-        <h1><img src="img/logo.png" alt="TorHero"> TorHero</h1>
+        <h1><img src="img/logo.png" alt="TorHero" width="50"> TorHero</h1>
         <div class="input-group mb-3">
-            <span class="input-group-text"><i class="bi bi-magnet-fill"></i></span>
-            <input type="text" class="form-control" placeholder="magnet">
-            <button class="btn btn-outline-secondary btn-clear" type="button">x</button>
-            <button class="btn btn-outline-secondary btn-dl" type="button"><i class="bi bi-download"></i></button>
+            <span class="input-group-text border-primary bg-primary text-white"><i class="bi bi-magnet-fill"></i></span>
+            <input type="text" name="magnet" class="form-control border-end-0 border-primary" placeholder="magnet">
+            <button class="btn btn-outline-primary btn-clear border-start-0 border-primary" type="button"><i class="bi bi-x"></i></button>
+            <button class="btn btn-primary btn-dl border-primary" type="button"><i class="bi bi-download"></i></button>
         </div>
         <div class="input-group">
             <span class="input-group-text"><i class="bi bi-folder"></i></span>
@@ -33,8 +33,9 @@
                 <option selected value="series">TV Show</option>
                 <option value="movies">Movie</option>
             </select>
+            <button class="btn btn-secondary" type="button"><i class="bi bi-gear"></i></button>
         </div>
-        <div id="torlist">
+        <div class="mt-4" id="torlist">
             
         </div>
     </div>

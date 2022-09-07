@@ -8,14 +8,15 @@ function download(e){
     fetch(`/m/${folder}/${magnet}`)
 }
 
-function clear(e){
+function clear(){
     console.log("clear")
-    const input = e.target.parentNode.getElementsByTagName('input')[0]
+    const input = document.querySelector('[name="magnet"]')
     input.value = ""
 }
 
 function del(e){
     const id = e.target.dataset['id']
+    console.log('delete torrent',id)
     fetch(`/del/`+id)    
 }
 
@@ -36,24 +37,21 @@ function currentStatus(){
 }
 
 function toritem(torrent){
-    return `<div class="tor">
-        <div class="row">
-            <div class="col">${torrent.name}</div>
+    return `<div class="border-bottom">
+        <div class="torname">${torrent.name}</div>
+        <div class="subinfo">
+            <div class="col"><i class="bi bi-file-earmark"></i> ${parseInt(torrent.size/1024/1024)} Mo <i class="bi bi-folder"></i> ${torrent.path}</div>
         </div>
-        <div class="row subinfo">
-            <div class="col">${torrent.path}</div>
-            <div class="col">${parseInt(torrent.size/1024/1024)} Mo</div>
-        </div>
-        <div class="row">
-            <div class="col-1">
-                <button type="button" class="btn-close btn-del" data-id="${torrent.id}"></button>
+        <div class="row-progress">
+            <div class="col-x me-2">
+                <i class="bi bi-x-circle btn-del" data-id="${torrent.id}"></i>
             </div>
-            <div class="col-8">
+            <div class="col-progress">
                 <div class="progress mt-2" style="height:7px;">
-                    <div class="progress-bar" role="progressbar" id="torrentprogress" style="width: ${parseInt(torrent.progress*100)}%;"></div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="torrentprogress" style="width: ${parseInt(torrent.progress*100)}%;"></div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-speed ms-2 text-end">
                 ${parseInt(torrent.speed/1024/1024*10)/10} Mo/s
             </div>
         </div>
@@ -68,4 +66,5 @@ function strToDom(str){
 
 document.querySelectorAll('.btn-dl').forEach(i => i.addEventListener('click',download))
 document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click',clear))
-setInterval(currentStatus,1500)
+currentStatus()
+setInterval(currentStatus,15000)
