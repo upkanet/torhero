@@ -1,0 +1,24 @@
+{
+  "name": "torhero",
+  "version": "0.1.0",
+  "description": "Mobile and WebUI minimalist seedbox server based on webtorrent",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/upkanet/torhero.git"
+  },
+  "keywords": [
+    "webtorrent",
+    "seedbox",
+    "mobile"
+  ],
+  "author": "Jean-Damien Louise",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/upkanet/torhero/issues"
+  },
+  "homepage": "https://github.com/upkanet/torhero#readme"
+}
