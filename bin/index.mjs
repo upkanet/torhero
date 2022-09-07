@@ -68,6 +68,11 @@ app.post('/folders',(req,res)=>{
     res.json({"message":"ok"})
 })
 
+app.delete('/folders/:name',(req,res)=>{
+    folders.remove(req.params.name)
+    res.json({"message":"ok"})
+})
+
 app.listen(8000,()=>{
     console.log("TorHero available on http://localhost:8000")
 });

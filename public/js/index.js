@@ -60,6 +60,7 @@ function toritem(torrent) {
 
 function populateFolders() {
     const sel = document.getElementById('folder')
+    sel.innerHTML = ""
     fetch('/folders')
         .then((response) => {
             return response.json()
@@ -90,13 +91,14 @@ function listFolders(){
             data.forEach((folder) => {
                 folderslist.append(strToDom(`
                 <div class="row">
-                    <div class="col">${folder.name}</div><div class="col">${folder.path}</div><div class="col text-end"><i class="bi bi-x-circle"></i></div>
+                    <div class="col">${folder.name}</div><div class="col">${folder.path}</div><div class="col text-end"><i class="bi bi-x-circle btn-del-folder" data-folder="${folder.name}"></i></div>
                 </div>`))
             })
             folderslist.append(strToDom(`
                 <div class="row" id="row-add-folder">
                     <div class="col"><input name="name" class="form-control" type="text" placeholder="Name"></div><div class="col"><input name="path" class="form-control" type="text" placeholder="/path/to/folder"></div><div class="col text-end"><button class="btn btn-primary" id="btn-add-folder"><i class="bi bi-plus"></i></i></button></div>
                 </div>`))
+            document.querySelectorAll('.btn-del-folder').forEach(i => i.addEventListener('click', delFolder))
             document.getElementById('btn-add-folder').addEventListener('click', addFolder)
         })
 }
@@ -119,6 +121,18 @@ function addFolder() {
     })
 }
 
+function delFolder(e){
+    const folder = e.target.dataset['folder']
+    console.log('delete',folder)
+    fetch('/folders/'+folder,{
+        method: 'DELETE'
+    }).then((response) => response.json())
+    .then((data)=>{
+        console.log(data)
+        listFolders()
+    })
+}
+
 function strToDom(str) {
     const placeholder = document.createElement("div");
     placeholder.innerHTML = str;
@@ -128,6 +142,10 @@ function strToDom(str) {
 document.querySelectorAll('.btn-dl').forEach(i => i.addEventListener('click', download))
 document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
 document.querySelector('.btn-dialog').addEventListener('click', openFoldersDialog)
+document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>{
+    populateFolders()
+    foldersDialog.close()
+})
 populateFolders()
 currentStatus()
 setInterval(currentStatus, 15000)
