@@ -38,3 +38,7 @@ dialog {
 .btn-del-folder{
     cursor: pointer;
 }
+
+.btn-del{
+    cursor: pointer;
+}

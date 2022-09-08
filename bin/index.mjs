@@ -12,6 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 import {Folders} from '../lib/folders.mjs'
+import fs from 'fs'
 
 const client = new WebTorrent()
 const folders = new Folders()
@@ -21,15 +22,16 @@ app.get('/',(req,res)=>{
     // res.redirect('index.htm')
 })
 
-app.get('/m/:folder/:magnet', (req, res) =>{
-    client.add(req.params.magnet, {path: `/home/pi/${req.params.folder}`}, function (torrent) {
-        console.log('Client is downloading:', torrent.name)
+app.post('/magnet', (req, res) =>{
+    if(!fs.existsSync(req.body.folder)) return 0
+    client.add(req.body.magnet, {path: `${req.body.folder}`}, function (torrent) {
+        console.log('Downloading:', torrent.name)
         torrent.on('done', function () {
-            console.log(torrent.name,'done')
+            console.log('Finished:',torrent.name)
             torrent.destroy()
         })
       })
-    res.send(req.params.magnet);
+    res.send(req.body.magnet);
 });
 
 app.get('/current',(req,res)=>{
@@ -51,7 +53,7 @@ app.get('/del/:id',(req,res)=>{
     const id = req.params.id
     if(id>client.torrents-1) return 0
     const torrent = client.torrents[id]
-    console.log('Client is deleting',torrent.name)
+    console.log('Deleting:',torrent.name)
     torrent.destroy()
 })
 

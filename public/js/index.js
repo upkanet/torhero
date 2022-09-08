@@ -1,11 +1,21 @@
 console.log("Webtorrent JS")
 
 function download(e) {
-    const input = e.target.parentNode.getElementsByTagName('input')[0]
-    const magnet = encodeURIComponent(input.value)
+    const input = document.querySelector('[name="magnet"]')
+    const magnet = input.value
     const folder = document.getElementById('folder').value
     console.log('Download', folder, magnet)
-    fetch(`/m/${folder}/${magnet}`)
+    fetch(`/magnet`,{
+        method:'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+            folder:folder,
+            magnet:magnet
+        })
+    })
 }
 
 function clear() {
@@ -139,7 +149,7 @@ function strToDom(str) {
     return placeholder.firstElementChild;
 }
 
-document.querySelectorAll('.btn-dl').forEach(i => i.addEventListener('click', download))
+document.getElementById('btn-dl').addEventListener('click', download)
 document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
 document.querySelector('.btn-dialog').addEventListener('click', openFoldersDialog)
 document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>{
@@ -148,4 +158,4 @@ document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>
 })
 populateFolders()
 currentStatus()
-setInterval(currentStatus, 15000)
+setInterval(currentStatus, 1500)
