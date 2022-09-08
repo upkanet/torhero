@@ -170,6 +170,9 @@ document.getElementById('btn-open-config-dialog').addEventListener('click',()=>{
 document.getElementById('btn-magnet-handler').addEventListener('click',()=>{
     navigator.registerProtocolHandler("magnet",window.location.origin+"/?open=%s","TorHero Magnet handler")
 })
+document.getElementById('btn-close-config-dialog').addEventListener('click',()=>{
+    configDialog.close()
+})
 
 checkOpenMagnet()
 populateFolders()
