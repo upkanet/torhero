@@ -36,7 +36,6 @@ function currentStatus() {
             return response.json()
         })
         .then((data) => {
-            console.log(data)
             const torlist = document.getElementById('torlist')
             torlist.innerHTML = ""
             data.forEach(torrent => {

@@ -19,9 +19,9 @@ const folders = new Folders()
 
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname, '../public/index.htm'))
-    // res.redirect('index.htm')
 })
 
+//Add magnet
 app.post('/magnet', (req, res) =>{
     if(!fs.existsSync(req.body.folder)) return 0
     client.add(req.body.magnet, {path: `${req.body.folder}`}, function (torrent) {
@@ -34,6 +34,7 @@ app.post('/magnet', (req, res) =>{
     res.send(req.body.magnet);
 });
 
+//List magnets
 app.get('/current',(req,res)=>{
     const torrents = client.torrents.map((torrent,i)=>{
         return {
@@ -48,6 +49,7 @@ app.get('/current',(req,res)=>{
     res.json(torrents)
 })
 
+//Delete magnet
 app.get('/del/:id',(req,res)=>{
     const id = req.params.id
     if(id>client.torrents-1) return 0
