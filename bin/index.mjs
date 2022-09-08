@@ -46,7 +46,6 @@ app.get('/current',(req,res)=>{
         }
     })
     res.json(torrents)
-    // res.send('[{"id":0,"name":"Rick.and.Morty.S06E01.1080p.WEBRip.x264-BAE[rarbg]","path":"/home/pi/series","speed":12118291.2,"progress":0.10576592330678518,"size":712267521},{"id":1,"name":"Rick.and.Morty.S06E02.1080p.WEBRip.x264-BAE[rarbg]","path":"/home/pi/series","speed":12118291.2,"progress":0.30576592330678518,"size":712267521}]')
 })
 
 app.get('/del/:id',(req,res)=>{
@@ -75,6 +74,8 @@ app.delete('/folders/:name',(req,res)=>{
     res.json({"message":"ok"})
 })
 
-app.listen(8000,()=>{
-    console.log("TorHero available on http://localhost:8000")
+const port = (process.argv[2]=="-p") ? process.argv[3] : 8000
+
+app.listen(port,()=>{
+    console.log("TorHero available on http://localhost:"+port)
 });
