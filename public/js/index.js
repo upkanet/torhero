@@ -1,5 +1,11 @@
 console.log("Webtorrent JS")
 
+function checkOpenMagnet(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const magnet = urlParams.get('open');
+    document.querySelector('[name="magnet"]').value = magnet
+}
+
 function download(e) {
     const input = document.querySelector('[name="magnet"]')
     const magnet = input.value
@@ -81,7 +87,7 @@ function populateFolders() {
         })
 }
 
-const foldersDialog = document.querySelector('dialog')
+const foldersDialog = document.getElementById('foldersDialog')
 
 function openFoldersDialog() {
     listFolders()
@@ -148,13 +154,24 @@ function strToDom(str) {
     return placeholder.firstElementChild;
 }
 
+const configDialog = document.getElementById('configDialog')
+
+
 document.getElementById('btn-dl').addEventListener('click', download)
 document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
-document.querySelector('.btn-dialog').addEventListener('click', openFoldersDialog)
+document.getElementById('btn-open-folder-dialog').addEventListener('click', openFoldersDialog)
 document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>{
     populateFolders()
     foldersDialog.close()
 })
+document.getElementById('btn-open-config-dialog').addEventListener('click',()=>{
+    configDialog.showModal()
+})
+document.getElementById('btn-magnet-handler').addEventListener('click',()=>{
+    navigator.registerProtocolHandler("magnet",window.location.origin+"/?open=%s","TorHero Magnet handler")
+})
+
+checkOpenMagnet()
 populateFolders()
 currentStatus()
 setInterval(currentStatus, 1500)

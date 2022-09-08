@@ -20,7 +20,7 @@
 
 <body>
     <div class="container">
-        <h1><img src="img/logo.png" alt="TorHero" width="50"> TorHero</h1>
+        <h1><img src="img/logo.png" alt="TorHero" width="50"> TorHero <a id="btn-open-config-dialog" href="#"><i class="bi bi-gear"></i></a></h1>
         <div class="input-group mb-3">
             <span class="input-group-text border-primary bg-primary text-white"><i class="bi bi-magnet-fill"></i></span>
             <input type="text" name="magnet" class="form-control border-end-0 border-primary" placeholder="magnet">
@@ -32,19 +32,23 @@
             <select id="folder" class="form-select">
                 
             </select>
-            <button class="btn btn-secondary btn-dialog" type="button"><i class="bi bi-gear"></i></button>
+            <button id="btn-open-folder-dialog" class="btn btn-secondary" type="button"><i class="bi bi-gear"></i></button>
         </div>
         <div class="mt-4" id="torlist">
             
         </div>
     </div>
 
-    <dialog class="container">
+    <dialog id="foldersDialog" class="container">
         <div class="row">
             <div class="col"><h4>Folders</h4></div>
             <div class="col text-end"><button class="btn-close" id="btn-close-folder-dialog"></button></div>
         </div>
         <div id="folderslist"></div>
+    </dialog>
+
+    <dialog id="configDialog" class="container">
+        <button id="btn-magnet-handler" class="btn btn-primary">Set TorHero as default <i>magnet</i> handler</button>
     </dialog>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
