@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import WebTorrent from 'webtorrent';
 import express from 'express';
+import https from 'https';
 const app = express();
 // app.use(express.static('public'));
 import path from 'path';
@@ -76,8 +77,26 @@ app.delete('/folders/:name',(req,res)=>{
     res.json({"message":"ok"})
 })
 
-const port = (process.argv[2]=="-p") ? process.argv[3] : 8000
+let port = 8000
+if(process.argv.includes('-p')) port = process.argv[process.argv.indexOf('-p') + 1]
 
-app.listen(port,()=>{
-    console.log("TorHero available on http://localhost:"+port)
-});
+if(process.argv.includes('-s')){
+    const httpskey = process.argv[process.argv.indexOf('-k') + 1]
+    const httpscert = process.argv[process.argv.indexOf('-c') + 1]
+    https
+        .createServer(
+            {
+                key:fs.readFileSync(httpskey),
+                cert:fs.readFileSync(httpscert)
+            },
+            app
+            )
+        .listen(port,()=>{
+            console.log("TorHero available on https://localhost:"+port)
+        })
+}
+else{
+    app.listen(port,()=>{
+        console.log("TorHero available on http://localhost:"+port)
+    });
+}
