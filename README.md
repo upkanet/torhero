@@ -49,3 +49,8 @@ You can remove the torrent during it's downloading.
 You can set TorHero as your default handler for *magnet:* links. To do so, just click on the gear on top to open the Config dialog.
 
 **Important**: your torhero server must run on local or https server.
+### Https server
+You can start torhero as a https server. You only need to provide an SSL key and certificate. You can use [mkcert](https://github.com/FiloSottile/mkcert) to create those files. As mentionned, it will allow you to open *magnet:* links with torhero.
+```bash
+torhero -s -k path/to/key -c path/to/certificate
+```
