@@ -45,6 +45,18 @@ pm2 start torhero
 You can remove the torrent during it's downloading.
 
 **Important**: It will NOT remove the files
+### Provide a folder configuration file
+You can provide a json file containing folders' names and path by using this command. By default, a folders.json file is created inside the script folder.
+```bash
+torhero -folders path/to/folders.json
+```
+For example, inside folders.json
+```json
+{
+    "Torrents":"/home/pi/torrents"
+}
+```
+**Important**: you should have read/write access to this file
 ### Magnet scheme/protocol handler
 You can set TorHero as your default handler for *magnet:* links. To do so, just click on the gear on top to open the Config dialog.
 

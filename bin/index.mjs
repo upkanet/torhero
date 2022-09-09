@@ -16,7 +16,14 @@ import {Folders} from '../lib/folders.mjs'
 import fs from 'fs'
 
 const client = new WebTorrent()
-const folders = new Folders()
+
+let folders
+if(process.argv.includes('-folders')){
+    folders = new Folders(process.argv[process.argv.indexOf('-folders') + 1])
+}
+else{
+    folders = new Folders()
+}
 
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname, '../public/index.htm'))
