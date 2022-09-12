@@ -41,6 +41,14 @@ pm2 start torhero
     2. Click on the download button on the left
 
 ## Other features
+### Password protection
+You can use a rudimentary password protection. To encrypt your password use any bcrypt encryption tool online. Then, to access to the server, the url is http://torhero_url/?pwd=mypassword
+```bash
+torhero -auth 'bcrypt-encrypted-password'
+#For example
+torhero -auth '$2a$12$rdJX3qYiA6L9epeoZ8K6SundSiC8wCjP45nahMsPWj6YcyHDt8S2m' #Password here is "abcdef"
+#http://localhost:8000/?pwd=abcdef
+```
 ### Stop download
 You can remove the torrent during it's downloading.
 

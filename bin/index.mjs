@@ -11,9 +11,16 @@ const __dirname = path.dirname(__filename);
 app.use('/', express.static(path.join(__dirname, '../public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-import {Folders} from '../lib/folders.mjs'
 import fs from 'fs'
+import {Folders} from '../lib/folders.mjs'
+import { pass, checkAuthenticated } from '../lib/auth.mjs';
+
+//Auth
+if(process.argv.includes('-auth')){
+    const userpassword = process.argv[process.argv.indexOf('-auth') + 1]
+    pass.active = true
+    pass.password = userpassword
+}
 
 const client = new WebTorrent()
 
@@ -25,8 +32,12 @@ else{
     folders = new Folders()
 }
 
-app.get('/',(req,res)=>{
+app.get('/', checkAuthenticated, (req,res)=>{
     res.sendFile(path.join(__dirname, '../public/index.htm'))
+})
+
+app.get('/login', (req,res)=>{
+    res.sendFile(path.join(__dirname, '../public/login.htm'))
 })
 
 //Add magnet
