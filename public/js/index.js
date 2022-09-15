@@ -149,7 +149,7 @@ function delFolder(e){
 }
 
 //WebSocket
-const socket = new WebSocket('ws://localhost:8000');
+const socket = new WebSocket('ws://'+window.location.host);
 socket.addEventListener('message', function (event) {
     console.log('WS Server:', event.data);
     toastMsg(event.data)
