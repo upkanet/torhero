@@ -164,7 +164,22 @@ const toast = new bootstrap.Toast(document.getElementById('toast'))
 function toastMsg(msg){
     msg = JSON.parse(msg)
     toast._element.querySelector('.toast-body').innerHTML = `${controllerIcon(msg.controller)}  ${msg.name}`
+    toastColor(controllerColor[msg.controller])
     toast.show()
+}
+function toastColor(colorName){
+    var el = document.getElementById('toast')
+    el.classList.forEach((className)=>{
+        if (className.startsWith('text-bg-')) {
+            el.classList.remove(className);
+        }
+    })
+    el.classList.add('text-bg-'+colorName)
+}
+const controllerColor = {
+    create:'primary',
+    destroy:'danger',
+    done:'success'
 }
 
 //Config
