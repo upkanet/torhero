@@ -1,6 +1,6 @@
 {
   "name": "torhero",
-  "version": "1.2.61",
+  "version": "1.2.62",
   "description": "Mobile and WebUI minimalist seedbox server based on webtorrent",
   "main": "./bin/index.mjs",
   "bin": {

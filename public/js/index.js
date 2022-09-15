@@ -163,9 +163,14 @@ socket.addEventListener('message', function (event) {
 const toast = new bootstrap.Toast(document.getElementById('toast'))
 function toastMsg(msg){
     msg = JSON.parse(msg)
-    toast._element.querySelector('.toast-body').innerHTML = `${controllerIcon(msg.controller)}  ${msg.name}`
+    toast._element.querySelector('.toast-body').innerHTML = `<i class="bi bi-${controllerIcon[msg.controller]}"></i>  ${msg.name}`
     toastColor(controllerColor[msg.controller])
     toast.show()
+}
+const controllerIcon = {
+    create:'plus-circle',
+    done:'check-circle',
+    destroy:'x-circle'
 }
 function toastColor(colorName){
     var el = document.getElementById('toast')
@@ -199,6 +204,13 @@ function checkOpenMagnet(){
 document.getElementById('btn-close-config-dialog').addEventListener('click',()=>{
     configDialog.close()
 })
+//Check HTTPS
+function checkHttps(){
+    if(location.protocol=='https:') return 0
+    document.querySelectorAll('.https-required').forEach((el)=>{
+        el.setAttribute('disabled','')
+    })
+}
 
 //Helpers
 function strToDom(str) {
@@ -213,25 +225,9 @@ function clear() {
 }
 document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
 
-function controllerIcon(controller){
-    let icon = ''
-    switch(controller){
-        case 'create':
-            icon = 'plus-circle'
-            break
-        case 'done':
-            icon = 'check-circle'
-            break
-        case 'destroy':
-            icon = 'x-circle'
-            break
-    }
-    return `<i class="bi bi-${icon}"></i>`
-}
-
-
 //Startup
 checkOpenMagnet()
+checkHttps()
 indexFolders()
 indexMagnets()
 setInterval(indexMagnets, 1500)
