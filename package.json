@@ -1,6 +1,6 @@
 {
   "name": "torhero",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "Mobile and WebUI minimalist seedbox server based on webtorrent",
   "main": "./bin/index.mjs",
   "bin": {
@@ -29,6 +29,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.18.1",
+    "express-ws": "^5.0.2",
     "webtorrent": "^1.8.29"
   }
 }

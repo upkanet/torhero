@@ -148,6 +148,18 @@ function delFolder(e){
     })
 }
 
+//WebSocket
+const socket = new WebSocket('ws://localhost:8000');
+socket.addEventListener('message', function (event) {
+    console.log('WS Server:', event.data);
+    toastMsg(event.data)
+});
+const toast = new bootstrap.Toast(document.getElementById('toast'))
+function toastMsg(msg){
+    toast._element.querySelector('.toast-body').innerHTML = msg
+    toast.show()
+}
+
 function strToDom(str) {
     const placeholder = document.createElement("div");
     placeholder.innerHTML = str;

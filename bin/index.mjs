@@ -3,6 +3,8 @@ import WebTorrent from 'webtorrent';
 import express from 'express';
 import https from 'https';
 const app = express();
+import expressWs from 'express-ws';
+const wsInstance = expressWs(app)
 // app.use(express.static('public'));
 import path from 'path';
 import url from 'url';
@@ -14,6 +16,9 @@ app.use(express.urlencoded({ extended: true }))
 import fs from 'fs'
 import {Folders} from '../lib/folders.mjs'
 import { pass, checkAuthenticated } from '../lib/auth.mjs';
+
+let port = 8000
+if(process.argv.includes('-p')) port = process.argv[process.argv.indexOf('-p') + 1]
 
 //Auth
 if(process.argv.includes('-auth')){
@@ -45,8 +50,10 @@ app.post('/magnet', (req, res) =>{
     if(!fs.existsSync(req.body.folder)) return 0
     client.add(req.body.magnet, {path: `${req.body.folder}`}, function (torrent) {
         console.log('Downloading:', torrent.name)
+        broadcast(torrent.name+' started')
         torrent.on('done', function () {
             console.log('Finished:',torrent.name)
+            broadcast(torrent.name+' downloaded')
             torrent.destroy()
         })
       })
@@ -95,8 +102,20 @@ app.delete('/folders/:name',(req,res)=>{
     res.json({"message":"ok"})
 })
 
-let port = 8000
-if(process.argv.includes('-p')) port = process.argv[process.argv.indexOf('-p') + 1]
+//WebSocket
+app.ws('/', function(ws, req) {
+    console.log('ws client')
+    ws.on('message', function(msg) {
+      console.log(msg);
+    });
+});
+
+function broadcast(msg){
+    wsInstance.getWss().clients.forEach((ws)=>{
+        ws.send(msg)
+    })
+}
+
 
 if(process.argv.includes('-s')){
     const httpskey = process.argv[process.argv.indexOf('-k') + 1]
