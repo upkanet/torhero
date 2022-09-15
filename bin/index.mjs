@@ -45,23 +45,9 @@ app.get('/login', (req,res)=>{
     res.sendFile(path.join(__dirname, '../public/login.htm'))
 })
 
-//Add magnet
-app.post('/magnet', (req, res) =>{
-    if(!fs.existsSync(req.body.folder)) return 0
-    client.add(req.body.magnet, {path: `${req.body.folder}`}, function (torrent) {
-        console.log('Downloading:', torrent.name)
-        broadcast(torrent.name+' started')
-        torrent.on('done', function () {
-            console.log('Finished:',torrent.name)
-            broadcast(torrent.name+' downloaded')
-            torrent.destroy()
-        })
-      })
-    res.send(req.body.magnet);
-});
-
-//List magnets
-app.get('/current',(req,res)=>{
+//RESTful magnets webservice
+//Index
+app.get('/magnets',(req,res)=>{
     const torrents = client.torrents.map((torrent,i)=>{
         return {
             id: i,
@@ -75,21 +61,39 @@ app.get('/current',(req,res)=>{
     res.json(torrents)
 })
 
-//Delete magnet
-app.get('/del/:id',(req,res)=>{
+//Create
+app.post('/magnets', (req, res) =>{
+    if(!fs.existsSync(req.body.folder)) return 0
+    client.add(req.body.magnet, {path: `${req.body.folder}`}, function (torrent) {
+        console.log('Downloading:', torrent.name)
+        broadcastRestMagnets('create',torrent.name)
+        torrent.on('done', function () {
+            console.log('Finished:',torrent.name)
+            broadcastRestMagnets('done',torrent.name)
+            torrent.destroy()
+        })
+      })
+    res.send(req.body.magnet);
+});
+
+//Destroy
+app.delete('/magnets/:id',(req,res)=>{
     const id = req.params.id
     if(id>client.torrents-1) return 0
     const torrent = client.torrents[id]
     console.log('Deleting:',torrent.name)
+    broadcastRestMagnets('destroy',torrent.name)
     torrent.destroy()
 })
 
-//Folders
+//RESTful folders webservice
+//Index
 app.get('/folders',(req,res)=>{
     folders.load()
     res.json(folders.list)
 })
 
+//Create
 app.post('/folders',(req,res)=>{
     folders.load()
     const b = req.body
@@ -97,6 +101,7 @@ app.post('/folders',(req,res)=>{
     res.json({"message":"ok"})
 })
 
+//Destroy
 app.delete('/folders/:name',(req,res)=>{
     folders.remove(req.params.name)
     res.json({"message":"ok"})
@@ -114,6 +119,13 @@ function broadcast(msg){
     wsInstance.getWss().clients.forEach((ws)=>{
         ws.send(msg)
     })
+}
+
+function broadcastRestMagnets(controller,name){
+    broadcast(JSON.stringify({
+        controller:controller,
+        name:name
+    }))
 }
 
 

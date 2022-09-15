@@ -1,43 +1,9 @@
-console.log("Webtorrent JS")
+console.log("TorHero")
 
-function checkOpenMagnet(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const magnet = urlParams.get('open');
-    document.querySelector('[name="magnet"]').value = magnet
-}
-
-function download(e) {
-    const input = document.querySelector('[name="magnet"]')
-    const magnet = input.value
-    const folder = document.getElementById('folder').value
-    console.log('Download', folder, magnet)
-    fetch(`/magnet`,{
-        method:'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({
-            folder:folder,
-            magnet:magnet
-        })
-    })
-}
-
-function clear() {
-    console.log("clear")
-    const input = document.querySelector('[name="magnet"]')
-    input.value = ""
-}
-
-function del(e) {
-    const id = e.target.dataset['id']
-    console.log('delete torrent', id)
-    fetch(`/del/` + id)
-}
-
-function currentStatus() {
-    fetch('/current')
+//RESTful magnets
+//Index magnets
+function indexMagnets() {
+    fetch('/magnets')
         .then((response) => {
             return response.json()
         })
@@ -47,7 +13,7 @@ function currentStatus() {
             data.forEach(torrent => {
                 torlist.append(strToDom(toritem(torrent)))
             })
-            document.querySelectorAll('.btn-del').forEach(i => i.addEventListener('click', del))
+            document.querySelectorAll('.btn-del').forEach(i => i.addEventListener('click', destroyMagnets))
         })
 }
 
@@ -55,7 +21,7 @@ function toritem(torrent) {
     return `<div class="border-bottom">
         <div class="torname">${torrent.name}</div>
         <div class="subinfo">
-            <div class="col"><i class="bi bi-file-earmark"></i> ${parseInt(torrent.size / 1024 / 1024)} Mo <i class="bi bi-folder"></i> ${torrent.path}</div>
+            <div class="col"><i class="bi bi-file-earmark"></i> ${parseInt(torrent.size / 1024 / 1024)} Mo <i class="bi bi-arrow-right"></i> <i class="bi bi-folder"></i> ${torrent.path}</div>
         </div>
         <div class="row-progress">
             <div class="col-x me-2">
@@ -73,7 +39,38 @@ function toritem(torrent) {
     </div>`
 }
 
-function populateFolders() {
+//New magnets
+document.getElementById('btn-dl').addEventListener('click', createMagnets)
+
+//Create magnets
+function createMagnets(e) {
+    const input = document.querySelector('[name="magnet"]')
+    const magnet = input.value
+    const folder = document.getElementById('folder').value
+    console.log('Download', folder, magnet)
+    fetch(`/magnets`,{
+        method:'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+            folder:folder,
+            magnet:magnet
+        })
+    })
+}
+
+//Destroy magnets
+function destroyMagnets(e) {
+    const id = e.target.dataset['id']
+    console.log('delete torrent', id)
+    fetch(`/magnets/${id}`,{method:'DELETE'})
+}
+
+//RESTful folders
+//Index folders
+function indexFolders() {
     const sel = document.getElementById('folder')
     sel.innerHTML = ""
     fetch('/folders')
@@ -87,14 +84,8 @@ function populateFolders() {
         })
 }
 
-const foldersDialog = document.getElementById('foldersDialog')
-
-function openFoldersDialog() {
-    listFolders()
-    foldersDialog.showModal()
-}
-
-function listFolders(){
+//New folders
+function newFolders(){
     const folderslist = document.getElementById('folderslist')
     folderslist.innerHTML = ""
 
@@ -113,12 +104,26 @@ function listFolders(){
                 <div class="row" id="row-add-folder">
                     <div class="col"><input name="name" class="form-control" type="text" placeholder="Name"></div><div class="col"><input name="path" class="form-control" type="text" placeholder="/path/to/folder"></div><div class="col text-end"><button class="btn btn-primary" id="btn-add-folder"><i class="bi bi-plus"></i></i></button></div>
                 </div>`))
-            document.querySelectorAll('.btn-del-folder').forEach(i => i.addEventListener('click', delFolder))
-            document.getElementById('btn-add-folder').addEventListener('click', addFolder)
+            document.querySelectorAll('.btn-del-folder').forEach(i => i.addEventListener('click', destroyFolders))
+            document.getElementById('btn-add-folder').addEventListener('click', createFolders)
         })
 }
 
-function addFolder() {
+const foldersDialog = document.getElementById('foldersDialog')
+
+function openFoldersDialog() {
+    newFolders()
+    foldersDialog.showModal()
+}
+
+document.getElementById('btn-open-folder-dialog').addEventListener('click', openFoldersDialog)
+document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>{
+    indexFolders()
+    foldersDialog.close()
+})
+
+//Create folders
+function createFolders() {
     const row = document.getElementById('row-add-folder')
     const iname = row.querySelector('[name="name"]')
     const ipath = row.querySelector('[name="path"]')
@@ -132,11 +137,12 @@ function addFolder() {
         body: JSON.stringify({name:iname.value, path:ipath.value})
     }).then((response) => response.json())
     .then((data)=>{
-        listFolders()
+        newFolders()
     })
 }
 
-function delFolder(e){
+//Destroy folders
+function destroyFolders(e){
     const folder = e.target.dataset['folder']
     console.log('delete',folder)
     fetch('/folders/'+folder,{
@@ -144,7 +150,7 @@ function delFolder(e){
     }).then((response) => response.json())
     .then((data)=>{
         console.log(data)
-        listFolders()
+        newFolders()
     })
 }
 
@@ -156,37 +162,61 @@ socket.addEventListener('message', function (event) {
 });
 const toast = new bootstrap.Toast(document.getElementById('toast'))
 function toastMsg(msg){
-    toast._element.querySelector('.toast-body').innerHTML = msg
+    msg = JSON.parse(msg)
+    toast._element.querySelector('.toast-body').innerHTML = `${controllerIcon(msg.controller)}  ${msg.name}`
     toast.show()
 }
 
-function strToDom(str) {
-    const placeholder = document.createElement("div");
-    placeholder.innerHTML = str;
-    return placeholder.firstElementChild;
-}
-
+//Config
 const configDialog = document.getElementById('configDialog')
-
-
-document.getElementById('btn-dl').addEventListener('click', download)
-document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
-document.getElementById('btn-open-folder-dialog').addEventListener('click', openFoldersDialog)
-document.getElementById('btn-close-folder-dialog').addEventListener('click',()=>{
-    populateFolders()
-    foldersDialog.close()
-})
 document.getElementById('btn-open-config-dialog').addEventListener('click',()=>{
     configDialog.showModal()
 })
 document.getElementById('btn-magnet-handler').addEventListener('click',()=>{
     navigator.registerProtocolHandler("magnet",window.location.origin+"/?open=%s","TorHero Magnet handler")
 })
+//Config magnet: handler
+function checkOpenMagnet(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const magnet = urlParams.get('open');
+    document.querySelector('[name="magnet"]').value = magnet
+}
 document.getElementById('btn-close-config-dialog').addEventListener('click',()=>{
     configDialog.close()
 })
 
+//Helpers
+function strToDom(str) {
+    const placeholder = document.createElement("div");
+    placeholder.innerHTML = str;
+    return placeholder.firstElementChild;
+}
+function clear() {
+    console.log("clear")
+    const input = document.querySelector('[name="magnet"]')
+    input.value = ""
+}
+document.querySelectorAll('.btn-clear').forEach(i => i.addEventListener('click', clear))
+
+function controllerIcon(controller){
+    let icon = ''
+    switch(controller){
+        case 'create':
+            icon = 'plus-circle'
+            break
+        case 'done':
+            icon = 'check-circle'
+            break
+        case 'destroy':
+            icon = 'x-circle'
+            break
+    }
+    return `<i class="bi bi-${icon}"></i>`
+}
+
+
+//Startup
 checkOpenMagnet()
-populateFolders()
-currentStatus()
-setInterval(currentStatus, 1500)
+indexFolders()
+indexMagnets()
+setInterval(indexMagnets, 1500)
